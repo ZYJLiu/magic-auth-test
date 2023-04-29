@@ -4,9 +4,11 @@ import { useEffect, useState } from "react"
 import { UserContext, User } from "../lib/UserContext"
 import Router from "next/router"
 import { magic } from "../lib/magic"
+import Header from "@/components/header"
 
 export default function App({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User | null>(null)
+  console.log(user)
 
   useEffect(() => {
     setUser({ loading: true })
@@ -14,8 +16,7 @@ export default function App({ Component, pageProps }: AppProps) {
     if (magic) {
       magic.user.isLoggedIn().then((isLoggedIn) => {
         if (isLoggedIn) {
-          //@ts-ignore
-          magic.user?.getMetadata().then((userData) => setUser(userData))
+          magic?.user?.getMetadata().then((userData) => setUser(userData))
         } else {
           Router.push("/login")
           setUser(null)
@@ -26,7 +27,8 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ChakraProvider>
-      <UserContext.Provider value={user}>
+      <UserContext.Provider value={[user, setUser]}>
+        <Header />
         <Component {...pageProps} />
       </UserContext.Provider>
     </ChakraProvider>

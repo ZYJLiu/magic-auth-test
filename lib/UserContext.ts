@@ -1,8 +1,15 @@
 import { createContext } from "react"
 
-export interface User {
-  loading?: boolean
-  issuer?: string
+export type User = Record<string, any>
+
+export type UserState = {
+  user: User | null
+  loading: boolean
 }
 
-export const UserContext = createContext<User | null>(null)
+export type UserContextType = {
+  userState: UserState
+  setUserState: React.Dispatch<React.SetStateAction<UserState>>
+}
+
+export const UserContext = createContext<UserContextType | null>(null)
