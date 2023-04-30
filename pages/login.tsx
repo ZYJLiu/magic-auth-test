@@ -8,10 +8,11 @@ import SocialLogins from "../components/social-logins"
 const Login = () => {
   const [disabled, setDisabled] = useState(false)
   const [user, setUser] = useContext(UserContext)
+  console.log(user)
 
   // Redirec to /profile if the user is logged in
   useEffect(() => {
-    console.log(user)
+    console.log("user:", user)
     user?.issuer && Router.push("/profile")
     console.log(user)
   }, [user])

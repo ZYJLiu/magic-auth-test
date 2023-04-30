@@ -41,7 +41,7 @@ const Header = () => {
               </li>
               <li>
                 <a>
-                  <Button color="warning" size="sm" onPress={logout}>
+                  <Button color="warning" size="sm" onClick={logout}>
                     Logout
                   </Button>
                 </a>

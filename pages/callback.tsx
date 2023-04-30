@@ -15,8 +15,9 @@ const Callback = () => {
 
   // `getRedirectResult()` returns an object with user data from Magic and the social provider
   const finishSocialLogin = async () => {
+    console.log("finishing social login")
     let result = await magic.oauth.getRedirectResult()
-    console.log(result)
+    console.log("getRedirectReslt: ", result)
     authenticateWithServer(result.magic.idToken)
   }
 
@@ -30,6 +31,7 @@ const Callback = () => {
 
   // Send token to server to validate
   const authenticateWithServer = async (didToken) => {
+    console.log("authenticating with server")
     let res = await fetch("/api/login", {
       method: "POST",
       headers: {
@@ -38,10 +40,12 @@ const Callback = () => {
       },
     })
 
+    console.log(res)
+
     if (res.status === 200) {
       // Set the UserContext to the now logged in user
       let userMetadata = await magic.user.getMetadata()
-      console.log(userMetadata)
+      console.log("userMetadata: ", userMetadata)
       await setUser(userMetadata)
       Router.push("/profile")
     }

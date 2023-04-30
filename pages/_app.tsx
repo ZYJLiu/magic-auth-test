@@ -8,7 +8,7 @@ import Header from "@/components/header"
 
 export default function App({ Component, pageProps }: AppProps) {
   const [user, setUser] = useState<User | null>(null)
-  console.log(user)
+  console.log("App page user:", user)
 
   useEffect(() => {
     setUser({ loading: true })
