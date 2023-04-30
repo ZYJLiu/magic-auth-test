@@ -1,15 +1,22 @@
+// lib/UserContext.ts
+
 import { createContext } from "react"
 
-export type User = Record<string, any>
-
-export type UserState = {
-  user: User | null
-  loading: boolean
+interface UserBase {
+  issuer?: string | null
+  publicAddress?: string | null
+  email?: string | null
+  isMfaEnabled?: boolean
+  phoneNumber?: string | null
+  walletType?: string | null
+  loading?: boolean
 }
 
+export type User = (UserBase & { [key: string]: any }) | null
+
 export type UserContextType = {
-  userState: UserState
-  setUserState: React.Dispatch<React.SetStateAction<UserState>>
+  user: User
+  setUser: React.Dispatch<React.SetStateAction<User>>
 }
 
 export const UserContext = createContext<UserContextType | null>(null)

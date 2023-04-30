@@ -6,7 +6,8 @@ import Loading from "../components/loading"
 
 const Callback = () => {
   const router = useRouter()
-  const [user, setUser] = useContext(UserContext)
+  const context = useContext(UserContext)
+  const { setUser } = context || {}
 
   // The redirect contains a `provider` query param if the user is logging in with a social provider
   useEffect(() => {
@@ -16,21 +17,23 @@ const Callback = () => {
   // `getRedirectResult()` returns an object with user data from Magic and the social provider
   const finishSocialLogin = async () => {
     console.log("finishing social login")
-    let result = await magic.oauth.getRedirectResult()
+    let result = await magic?.oauth.getRedirectResult()
     console.log("getRedirectReslt: ", result)
-    authenticateWithServer(result.magic.idToken)
+    authenticateWithServer(result?.magic.idToken)
   }
 
   // `loginWithCredential()` returns a didToken for the user logging in
   const finishEmailRedirectLogin = () => {
     if (router.query.magic_credential)
-      magic.auth
-        .loginWithCredential()
-        .then((didToken) => authenticateWithServer(didToken))
+      magic?.auth.loginWithCredential().then((didToken) => {
+        if (didToken) {
+          authenticateWithServer(didToken)
+        }
+      })
   }
 
   // Send token to server to validate
-  const authenticateWithServer = async (didToken) => {
+  const authenticateWithServer = async (didToken?: string) => {
     console.log("authenticating with server")
     let res = await fetch("/api/login", {
       method: "POST",
@@ -43,10 +46,10 @@ const Callback = () => {
     console.log(res)
 
     if (res.status === 200) {
-      // Set the UserContext to the now logged in user
-      let userMetadata = await magic.user.getMetadata()
-      console.log("userMetadata: ", userMetadata)
-      await setUser(userMetadata)
+      let userMetadata = await magic?.user.getMetadata()
+      if (userMetadata && setUser) {
+        await setUser(userMetadata)
+      }
       Router.push("/profile")
     }
   }

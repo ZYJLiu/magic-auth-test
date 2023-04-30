@@ -3,8 +3,8 @@ import { UserContext, User } from "../lib/UserContext"
 import Loading from "../components/loading"
 
 const Profile = () => {
-  const userData = useContext<User[] | null>(UserContext)
-  const user = userData && userData[0] // Access the user data in the first element of the array
+  const context = useContext(UserContext)
+  const user: User | null = context ? context.user : null
   console.log("Profile:", JSON.stringify(user, null, 2))
 
   return (

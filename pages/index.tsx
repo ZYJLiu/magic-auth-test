@@ -5,7 +5,8 @@ import { magic } from "../lib/magic"
 import { Button } from "@chakra-ui/react"
 
 const Home = () => {
-  const [user, setUser] = useContext(UserContext)
+  const context = useContext(UserContext)
+  const { user, setUser } = context || {}
 
   return (
     <>

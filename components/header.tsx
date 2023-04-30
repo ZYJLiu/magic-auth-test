@@ -3,15 +3,17 @@ import Link from "next/link"
 import Router from "next/router"
 import { magic } from "../lib/magic"
 import { UserContext } from "../lib/UserContext"
-// import { CallToAction, TextButton } from "@magiclabs/ui"
 import { Button } from "@chakra-ui/react"
 
 const Header = () => {
-  const [user, setUser] = useContext(UserContext)
+  const context = useContext(UserContext)
+  const { user, setUser } = context || {}
 
   const logout = () => {
-    magic.user.logout().then(() => {
-      setUser({ user: null })
+    magic?.user.logout().then(() => {
+      if (setUser) {
+        setUser(null)
+      }
       Router.push("/login")
     })
   }

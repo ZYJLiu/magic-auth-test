@@ -7,7 +7,7 @@ import { magic } from "../lib/magic"
 import Header from "@/components/header"
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User>({ loading: true })
   console.log("App page user:", user)
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <ChakraProvider>
-      <UserContext.Provider value={[user, setUser]}>
+      <UserContext.Provider value={{ user, setUser }}>
         <Header />
         <Component {...pageProps} />
       </UserContext.Provider>

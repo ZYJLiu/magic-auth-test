@@ -4,30 +4,27 @@ import { magic } from "../lib/magic"
 import { UserContext } from "../lib/UserContext"
 // import EmailForm from "../components/email-form"
 import SocialLogins from "../components/social-logins"
+import { OAuthProvider } from "@magic-ext/oauth"
 
 const Login = () => {
   const [disabled, setDisabled] = useState(false)
-  const [user, setUser] = useContext(UserContext)
-  console.log(user)
+  const context = useContext(UserContext)
+  const { user, setUser } = context || {}
 
-  // Redirec to /profile if the user is logged in
+  // Redirect to /profile if the user is logged in
   useEffect(() => {
-    console.log("user:", user)
-    user?.issuer && Router.push("/profile")
-    console.log(user)
+    if (user?.issuer) Router.push("/profile")
   }, [user])
 
-  async function handleLoginWithEmail(email) {
+  async function handleLoginWithEmail(email: string) {
     try {
-      setDisabled(true) // disable login button to prevent multiple emails from being triggered
+      setDisabled(true)
 
-      // Trigger Magic link to be sent to user
-      let didToken = await magic.auth.loginWithMagicLink({
+      let didToken = await magic?.auth.loginWithMagicLink({
         email,
-        redirectURI: new URL("/callback", window.location.origin).href, // optional redirect back to your app after magic link is clicked
+        redirectURI: new URL("/callback", window.location.origin).href,
       })
 
-      // Validate didToken with server
       const res = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -37,21 +34,22 @@ const Login = () => {
       })
 
       if (res.status === 200) {
-        // Set the UserContext to the now logged in user
-        let userMetadata = await magic.user.getMetadata()
-        await setUser(userMetadata)
+        let userMetadata = await magic?.user.getMetadata()
+        if (userMetadata && setUser) {
+          await setUser(userMetadata)
+        }
         Router.push("/profile")
       }
     } catch (error) {
-      setDisabled(false) // re-enable login button - user may have requested to edit their email
+      setDisabled(false)
       console.log(error)
     }
   }
 
-  async function handleLoginWithSocial(provider) {
-    await magic.oauth.loginWithRedirect({
-      provider, // google, apple, etc
-      redirectURI: new URL("/callback", window.location.origin).href, // required redirect to finish social login
+  async function handleLoginWithSocial(provider: OAuthProvider) {
+    await magic?.oauth.loginWithRedirect({
+      provider,
+      redirectURI: new URL("/callback", window.location.origin).href,
     })
   }
 
