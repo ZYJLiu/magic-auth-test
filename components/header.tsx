@@ -6,14 +6,11 @@ import { UserContext } from "../lib/UserContext"
 import { Button } from "@chakra-ui/react"
 
 const Header = () => {
-  const context = useContext(UserContext)
-  const { user, setUser } = context || {}
+  const { user, setUser } = useContext(UserContext)
 
   const logout = () => {
     magic?.user.logout().then(() => {
-      if (setUser) {
-        setUser(null)
-      }
+      setUser(null)
       Router.push("/login")
     })
   }

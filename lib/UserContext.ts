@@ -1,6 +1,6 @@
 // lib/UserContext.ts
 
-import { createContext } from "react"
+import { createContext, useState, ReactNode } from "react"
 
 interface UserBase {
   issuer?: string | null
@@ -12,11 +12,17 @@ interface UserBase {
   loading?: boolean
 }
 
-export type User = (UserBase & { [key: string]: any }) | null
+export type User = UserBase & { [key: string]: any }
 
 export type UserContextType = {
-  user: User
-  setUser: React.Dispatch<React.SetStateAction<User>>
+  user: User | null
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
 }
 
-export const UserContext = createContext<UserContextType | null>(null)
+// Create a default value for the UserContext
+const defaultUserContext: UserContextType = {
+  user: null, // Default user state
+  setUser: () => {}, // Default setUser function (no-op)
+}
+
+export const UserContext = createContext<UserContextType>(defaultUserContext)

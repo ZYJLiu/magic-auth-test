@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react"
+import { useEffect, useContext, useState } from "react"
 import Router, { useRouter } from "next/router"
 import { magic } from "../lib/magic"
 import { UserContext } from "../lib/UserContext"
@@ -6,19 +6,20 @@ import Loading from "../components/loading"
 
 const Callback = () => {
   const router = useRouter()
-  const context = useContext(UserContext)
-  const { setUser } = context || {}
+  const { setUser } = useContext(UserContext)
+  // const { setUser } = context || {}
 
   // The redirect contains a `provider` query param if the user is logging in with a social provider
   useEffect(() => {
     router.query.provider ? finishSocialLogin() : finishEmailRedirectLogin()
+    console.log("router.query: ", router.query)
   }, [router.query])
 
   // `getRedirectResult()` returns an object with user data from Magic and the social provider
   const finishSocialLogin = async () => {
     console.log("finishing social login")
     let result = await magic?.oauth.getRedirectResult()
-    console.log("getRedirectReslt: ", result)
+    console.log("getRedirectResult: ", result)
     authenticateWithServer(result?.magic.idToken)
   }
 
@@ -43,7 +44,7 @@ const Callback = () => {
       },
     })
 
-    console.log(res)
+    console.log("res:", res)
 
     if (res.status === 200) {
       let userMetadata = await magic?.user.getMetadata()

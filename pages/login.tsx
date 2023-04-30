@@ -8,13 +8,12 @@ import { OAuthProvider } from "@magic-ext/oauth"
 
 const Login = () => {
   const [disabled, setDisabled] = useState(false)
-  const context = useContext(UserContext)
-  const { user, setUser } = context || {}
+  const { user, setUser } = useContext(UserContext)
 
-  // Redirect to /profile if the user is logged in
-  useEffect(() => {
-    if (user?.issuer) Router.push("/profile")
-  }, [user])
+  // // Redirect to /profile if the user is logged in
+  // useEffect(() => {
+  //   if (user?.issuer) Router.push("/profile")
+  // }, [user])
 
   async function handleLoginWithEmail(email: string) {
     try {
@@ -35,7 +34,7 @@ const Login = () => {
 
       if (res.status === 200) {
         let userMetadata = await magic?.user.getMetadata()
-        if (userMetadata && setUser) {
+        if (userMetadata) {
           await setUser(userMetadata)
         }
         Router.push("/profile")
