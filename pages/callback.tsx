@@ -7,7 +7,6 @@ import Loading from "../components/loading"
 const Callback = () => {
   const router = useRouter()
   const { setUser } = useContext(UserContext)
-  // const { setUser } = context || {}
 
   // The redirect contains a `provider` query param if the user is logging in with a social provider
   useEffect(() => {

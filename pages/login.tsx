@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import Router from "next/router"
 import { magic } from "../lib/magic"
 import { UserContext } from "../lib/UserContext"
-// import EmailForm from "../components/email-form"
+import EmailForm from "../components/email-form"
 import SocialLogins from "../components/social-logins"
 import { OAuthProvider } from "@magic-ext/oauth"
 
@@ -54,7 +54,7 @@ const Login = () => {
 
   return (
     <div className="login">
-      {/* <EmailForm disabled={disabled} onEmailSubmit={handleLoginWithEmail} /> */}
+      <EmailForm disabled={disabled} onEmailSubmit={handleLoginWithEmail} />
       <SocialLogins onSubmit={handleLoginWithSocial} />
       <style jsx>{`
         .login {

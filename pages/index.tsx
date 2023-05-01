@@ -7,7 +7,6 @@ import Router from "next/router"
 
 const Home = () => {
   const { user, setUser } = useContext(UserContext)
-  // const { user, setUser } = context || {}
 
   useEffect(() => {
     if (magic) {

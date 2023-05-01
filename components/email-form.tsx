@@ -1,10 +1,23 @@
 import { useState } from "react"
-import { Input, Icon, MonochromeIcons, CallToAction } from "@magiclabs/ui"
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Button,
+  Box,
+  Heading,
+} from "@chakra-ui/react"
+import { EmailIcon, ArrowForwardIcon } from "@chakra-ui/icons"
 
-const EmailForm = ({ onEmailSubmit, disabled }) => {
+interface EmailFormProps {
+  onEmailSubmit: (email: string) => void
+  disabled?: boolean
+}
+
+const EmailForm: React.FC<EmailFormProps> = ({ onEmailSubmit, disabled }) => {
   const [email, setEmail] = useState("")
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     onEmailSubmit(email)
   }
@@ -12,45 +25,32 @@ const EmailForm = ({ onEmailSubmit, disabled }) => {
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <h3 className="form-header">Login</h3>
-        <div className="input-wrapper">
+        <Heading as="h3" textAlign="center" fontSize="xl" mt={6} mb={8}>
+          Login
+        </Heading>
+        <InputGroup size="md" mb={6} mx="auto" w="80%">
+          <InputLeftElement pointerEvents="none">
+            <EmailIcon color="gray.300" />
+          </InputLeftElement>
           <Input
-            placeholder="Enter your email"
-            size="sm"
             type="email"
+            placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            prefix={<Icon inline type={MonochromeIcons.Envelope} size={22} />}
           />
-        </div>
-        <div>
-          <CallToAction
-            leadingIcon={MonochromeIcons.PaperPlane}
-            color="primary"
-            size="sm"
+        </InputGroup>
+        <Box textAlign="center">
+          <Button
+            leftIcon={<ArrowForwardIcon />}
+            colorScheme="teal"
+            size="md"
             disabled={disabled}
             onClick={handleSubmit}
           >
             Send Magic Link
-          </CallToAction>
-        </div>
+          </Button>
+        </Box>
       </form>
-      <style jsx>{`
-        form,
-        label {
-          display: flex;
-          flex-flow: column;
-          text-align: center;
-        }
-        .form-header {
-          font-size: 22px;
-          margin: 25px 0;
-        }
-        .input-wrapper {
-          width: 80%;
-          margin: 0 auto 20px;
-        }
-      `}</style>
     </>
   )
 }
