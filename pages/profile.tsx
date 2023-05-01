@@ -1,55 +1,102 @@
-import { useContext } from "react"
-import { UserContext, User } from "../lib/UserContext"
+import { useUserContext } from "../lib/UserContext"
+import { VStack, Box, Text, Spinner, Flex, Heading } from "@chakra-ui/react"
 import Loading from "../components/loading"
+import { useEffect } from "react"
+import Router from "next/router"
+import { magic } from "../lib/magic"
 
 const Profile = () => {
-  const context = useContext(UserContext)
-  const user: User | null = context ? context.user : null
+  const { user, setUser } = useUserContext()
   console.log("Profile:", JSON.stringify(user, null, 2))
 
+  useEffect(() => {
+    if (magic) {
+      magic.user.isLoggedIn().then((isLoggedIn) => {
+        if (isLoggedIn) {
+          magic?.user?.getMetadata().then((userData) => {
+            setUser(userData)
+          })
+        } else {
+          Router.push("/login")
+        }
+      })
+    }
+  }, [])
+
   return (
-    <>
-      {user === null ? (
-        <Loading />
+    <Flex justifyContent="center">
+      {user === null || user.loading ? (
+        <>
+          <Loading />
+          {/* <Spinner size="xl" color="blue.500" /> */}
+        </>
       ) : (
+        // <Loading />
         user?.issuer && (
-          <>
-            <div className="label">Issuer</div>
-            <div className="profile-info">{user.issuer}</div>
+          <Box
+            p={6}
+            borderWidth={1}
+            borderRadius="lg"
+            boxShadow="lg"
+            w="80%"
+            maxW="500px"
+          >
+            <Heading mb={6} textAlign="center">
+              Profile
+            </Heading>
+            <VStack alignItems="flex-start" spacing={6}>
+              <Box>
+                <Text fontWeight="bold" color="blue.500">
+                  Issuer
+                </Text>
+                <Text wordBreak="break-word" overflowWrap="break-word">
+                  {user.issuer}
+                </Text>
+              </Box>
 
-            <div className="label">Public Address</div>
-            <div className="profile-info">{user.publicAddress}</div>
+              <Box>
+                <Text fontWeight="bold" color="blue.500">
+                  Public Address
+                </Text>
+                <Text wordBreak="break-word" overflowWrap="break-word">
+                  {user.publicAddress}
+                </Text>
+              </Box>
 
-            <div className="label">Email</div>
-            <div className="profile-info">{user.email}</div>
+              <Box>
+                <Text fontWeight="bold" color="blue.500">
+                  Email
+                </Text>
+                <Text wordBreak="break-word" overflowWrap="break-word">
+                  {user.email}
+                </Text>
+              </Box>
 
-            <div className="label">MFA Enabled</div>
-            <div className="profile-info">
-              {user.isMfaEnabled ? "Yes" : "No"}
-            </div>
+              <Box>
+                <Text fontWeight="bold" color="blue.500">
+                  MFA Enabled
+                </Text>
+                <Text>{user.isMfaEnabled ? "Yes" : "No"}</Text>
+              </Box>
 
-            <div className="label">Phone Number</div>
-            <div className="profile-info">
-              {user.phoneNumber || "Not provided"}
-            </div>
+              <Box>
+                <Text fontWeight="bold" color="blue.500">
+                  Phone Number
+                </Text>
+                <Text>{user.phoneNumber || "Not provided"}</Text>
+              </Box>
 
-            <div className="label">Wallet Type</div>
-            <div className="profile-info">{user.walletType}</div>
-          </>
+              <Box>
+                <Text fontWeight="bold" color="blue.500">
+                  Wallet Type
+                </Text>
+                <Text>{user.walletType}</Text>
+              </Box>
+            </VStack>
+          </Box>
         )
       )}
-      <style jsx>{`
-        .label {
-          font-size: 12px;
-          color: #6851ff;
-          margin: 30px 0 5px;
-        }
-        .profile-info {
-          font-size: 17px;
-          word-wrap: break-word;
-        }
-      `}</style>
-    </>
+    </Flex>
   )
 }
 

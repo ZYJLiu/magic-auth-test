@@ -1,17 +1,17 @@
 import { useEffect, useContext, useState } from "react"
 import Router, { useRouter } from "next/router"
 import { magic } from "../lib/magic"
-import { UserContext } from "../lib/UserContext"
+import { useUserContext } from "../lib/UserContext"
 import Loading from "../components/loading"
 
 const Callback = () => {
   const router = useRouter()
-  const { setUser } = useContext(UserContext)
+  const { setUser } = useUserContext()
 
   // The redirect contains a `provider` query param if the user is logging in with a social provider
   useEffect(() => {
     router.query.provider ? finishSocialLogin() : finishEmailRedirectLogin()
-    console.log("router.query: ", router.query)
+    console.log("router.query: ", JSON.stringify(router.query, null, 2))
   }, [router.query])
 
   // `getRedirectResult()` returns an object with user data from Magic and the social provider

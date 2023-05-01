@@ -1,19 +1,14 @@
 import { useState, useEffect, useContext } from "react"
 import Router from "next/router"
 import { magic } from "../lib/magic"
-import { UserContext } from "../lib/UserContext"
+import { useUserContext } from "../lib/UserContext"
 import EmailForm from "../components/email-form"
 import SocialLogins from "../components/social-logins"
 import { OAuthProvider } from "@magic-ext/oauth"
 
 const Login = () => {
   const [disabled, setDisabled] = useState(false)
-  const { user, setUser } = useContext(UserContext)
-
-  // // Redirect to /profile if the user is logged in
-  // useEffect(() => {
-  //   if (user?.issuer) Router.push("/profile")
-  // }, [user])
+  const { user, setUser } = useUserContext()
 
   async function handleLoginWithEmail(email: string) {
     try {

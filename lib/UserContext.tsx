@@ -1,6 +1,4 @@
-// lib/UserContext.ts
-
-import { createContext, useState, ReactNode } from "react"
+import { createContext, useState, useContext, useEffect } from "react"
 
 interface UserBase {
   issuer?: string | null
@@ -25,4 +23,18 @@ const defaultUserContext: UserContextType = {
   setUser: () => {}, // Default setUser function (no-op)
 }
 
-export const UserContext = createContext<UserContextType>(defaultUserContext)
+const UserContext = createContext<UserContextType>(defaultUserContext)
+
+export const useUserContext = () => useContext(UserContext)
+
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<User | null>({ loading: true })
+
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  )
+}

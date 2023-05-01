@@ -1,12 +1,12 @@
-import { useContext, useEffect } from "react"
-import { UserContext } from "../lib/UserContext"
+import { useUserContext } from "../lib/UserContext"
 import Loading from "../components/loading"
-import { magic } from "../lib/magic"
-import { Button } from "@chakra-ui/react"
+import { Center, Text } from "@chakra-ui/react"
 import Router from "next/router"
+import { magic } from "../lib/magic"
+import { useEffect } from "react"
 
 const Home = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useUserContext()
 
   useEffect(() => {
     if (magic) {
@@ -27,7 +27,11 @@ const Home = () => {
       {user?.loading ? (
         <Loading />
       ) : (
-        user?.issuer && <div>You're logged in! </div>
+        user?.issuer && (
+          <Center>
+            <Text fontSize="xl">You're logged in!</Text>
+          </Center>
+        )
       )}
     </>
   )

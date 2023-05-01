@@ -2,11 +2,11 @@ import { useContext } from "react"
 import Link from "next/link"
 import Router from "next/router"
 import { magic } from "../lib/magic"
-import { UserContext } from "../lib/UserContext"
+import { useUserContext } from "../lib/UserContext"
 import { Button } from "@chakra-ui/react"
 
 const Header = () => {
-  const { user, setUser } = useContext(UserContext)
+  const { user, setUser } = useUserContext()
 
   const logout = () => {
     magic?.user.logout().then(() => {
