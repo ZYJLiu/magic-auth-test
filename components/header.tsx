@@ -1,4 +1,3 @@
-import { useContext } from "react"
 import Link from "next/link"
 import Router from "next/router"
 import { magic } from "../lib/magic"
@@ -19,7 +18,7 @@ const Header = () => {
     <header>
       <nav>
         <ul>
-          {user?.loading ? (
+          {user?.loading || user == null ? (
             // If loading, don't display any buttons specific to the loggedIn state
             <div style={{ height: "38px" }}></div>
           ) : user?.issuer ? (

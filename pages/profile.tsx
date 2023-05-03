@@ -1,6 +1,5 @@
 import { useUserContext } from "../lib/UserContext"
 import { VStack, Box, Text, Spinner, Flex, Heading } from "@chakra-ui/react"
-import Loading from "../components/loading"
 import { useEffect } from "react"
 import Router from "next/router"
 import { magic } from "../lib/magic"
@@ -27,8 +26,7 @@ const Profile = () => {
     <Flex justifyContent="center">
       {user === null || user.loading ? (
         <>
-          <Loading />
-          {/* <Spinner size="xl" color="blue.500" /> */}
+          <Spinner size="xl" color="blue.500" />
         </>
       ) : (
         // <Loading />

@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react"
+import { useState } from "react"
 import Router from "next/router"
 import { magic } from "../lib/magic"
 import { useUserContext } from "../lib/UserContext"
@@ -16,6 +16,7 @@ const Login = () => {
 
       let didToken = await magic?.auth.loginWithMagicLink({
         email,
+        // showUI: true,
         redirectURI: new URL("/callback", window.location.origin).href,
       })
 

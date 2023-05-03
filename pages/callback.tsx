@@ -1,8 +1,8 @@
-import { useEffect, useContext, useState } from "react"
+import { useEffect } from "react"
 import Router, { useRouter } from "next/router"
 import { magic } from "../lib/magic"
 import { useUserContext } from "../lib/UserContext"
-import Loading from "../components/loading"
+import { Spinner, Flex } from "@chakra-ui/react"
 
 const Callback = () => {
   const router = useRouter()
@@ -54,7 +54,11 @@ const Callback = () => {
     }
   }
 
-  return <Loading />
+  return (
+    <Flex justifyContent="center">
+      <Spinner size="xl" color="blue.500" />
+    </Flex>
+  )
 }
 
 export default Callback

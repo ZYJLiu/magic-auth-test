@@ -1,6 +1,5 @@
 import { useUserContext } from "../lib/UserContext"
-import Loading from "../components/loading"
-import { Center, Text } from "@chakra-ui/react"
+import { Text, Spinner, Flex } from "@chakra-ui/react"
 import Router from "next/router"
 import { magic } from "../lib/magic"
 import { useEffect } from "react"
@@ -24,15 +23,13 @@ const Home = () => {
 
   return (
     <>
-      {user?.loading ? (
-        <Loading />
-      ) : (
-        user?.issuer && (
-          <Center>
-            <Text fontSize="xl">You're logged in!</Text>
-          </Center>
-        )
-      )}
+      <Flex justifyContent="center">
+        {user?.loading ? (
+          <Spinner size="xl" color="blue.500" />
+        ) : (
+          user?.issuer && <Text fontSize="xl">You're logged in!</Text>
+        )}
+      </Flex>
     </>
   )
 }
